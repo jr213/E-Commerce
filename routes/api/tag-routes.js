@@ -5,10 +5,10 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 router.get('/', async(req, res) => {
   try{
-    let info = await Tag.findAll({
+    let data = await Tag.findAll({
       include: [{model: Product}],
     })
-    res.status(200).json(info);
+    res.status(200).json(data);
   } catch(err){
     res.json(err)
   }
@@ -16,16 +16,16 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', async (req, res) => {
   try{
-    let info = await Tag.findOne({
+    let data = await Tag.findOne({
       where: {
         id: req.params.id
       },
       include:[{model: Product}]
     });
-    if(!info){
+    if(!data){
       return res.status(404).json('error')
     }
-    res.status(200).json(info);
+    res.status(200).json(data);
   }catch(err){
     res.json(err);
   }
@@ -44,12 +44,12 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try{
-    let info = await Tag.update(req.body, {
+    let data = await Tag.update(req.body, {
       where: {
         id: req.params.id,
       },
     })
-    if(!info){
+    if(!data){
       return res.status(404).json('error');
     }
     res.status(200).json('updated')
@@ -60,12 +60,12 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try{
-    let info = await Tag.destroy({
+    let data = await Tag.destroy({
       where: {
         id: req.params.id,
       },
     })
-    if(!info){
+    if(!data){
       return res.status(404).json('error')
     }
     res.status(200).json('deleted')

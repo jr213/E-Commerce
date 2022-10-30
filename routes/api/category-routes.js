@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
-
+const {create} = require('../../models/Product')
 // The `/api/categories` endpoint
 
 router.get('/', async (req, res) => {
   try{
-    let info = await Category.findAll({
+    let data = await Category.findAll({
       include:[{model: Product}],
     })
     res.status(200).json(data);
@@ -17,16 +17,16 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try{
-    let info = await Category.findOne({
+    let data = await Category.findOne({
       where: {
         id: req.params.id
       },
       include: [{model: Product}]
     });
-    if(!info){
+    if(!data){
       return res.status(404).json('Not found');
     }
-    res.status(200).json(info);
+    res.status(200).json(data);
   }
   catch (err) {
     res.json(err);
@@ -45,12 +45,12 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async(req, res) => {
   try{
-    let info = await Category.update(req.body, {
+    let data = await Category.update(req.body, {
       where: {
         id: req.params.id,
       },
     })
-    if(!info){
+    if(!data){
       return res.status(404).json('error')
     }
     res.status(200).json('updated');
@@ -62,12 +62,12 @@ router.put('/:id', async(req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try{
-    let info = await Category.destroy({
+    let data = await Category.destroy({
       where: {
         id: req.params.id,
       },
     })
-    if(!info){
+    if(!data){
       return res.status(404).json('error')
     }
     res.status(200).json('deleted')

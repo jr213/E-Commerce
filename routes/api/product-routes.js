@@ -1,15 +1,15 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
-
+const {afterBulkSync} = require('../../models/Product');
 // The `/api/products` endpoint
 
 // get all products
 router.get('/', async (req, res) => {
   try{
-    let info = await Product.findAll({
+    let data = await Product.findAll({
       include: [{model:Category}, {model: tag}],
     })
-    res.status(200).res.json(info)
+    res.status(200).res.json(data)
   }catch(err){
     res.json(err);
   }
@@ -18,13 +18,13 @@ router.get('/', async (req, res) => {
 // get one product
 router.get('/:id', async (req, res) => {
   try{
-    let info = await Product.findOne({
+    let data = await Product.findOne({
       where: {
         id: req.params.id
       },
       include: [{model: Category}, {model: Tag}]
     })
-    res.status(200).json(info);
+    res.status(200).json(data);
   }catch(err){
     res.json(err)
   }
@@ -106,12 +106,12 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try{
-    info = await Product.destroy({
+    data = await Product.destroy({
       where:{
         id: req.param.id
       },
     })
-    if(!info) {
+    if(!data) {
       return res.status(404).json('error')
     }
     res.status(200).json('deleted')
